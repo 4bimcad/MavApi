@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
+  <title>Register/Login 2</title>
   <script>
-    function register() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    async function register() {
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
 
-      google.script.run.withSuccessHandler(function(response) {
-        alert(response);
-      }).registerUser(email, password);
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwMjslypoVjpH7Jn1kKtdOPtXcFrpeaL6ieVC-hfJPJ9TP96qi5TZhvQKmPccIrYfm0/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=register&email=${email}&password=${password}`
+      });
+      const result = await response.json();
+      alert(result.message);
+    }
+
+    async function login() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwMjslypoVjpH7Jn1kKtdOPtXcFrpeaL6ieVC-hfJPJ9TP96qi5TZhvQKmPccIrYfm0/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=login&email=${email}&password=${password}`
+      });
+      const result = await response.json();
+      if (result.status === 'success') {
+        alert(`Login successful! Balances: Gold - ${result.gold}, Silver - ${result.silver}, Dollars - ${result.dollars}`);
+      } else {
+        alert(result.message);
+      }
     }
   </script>
 </head>
 <body>
   <h1>Register</h1>
-  <label>Email:</label><input type="email" id="email"><br>
-  <label>Password:</label><input type="password" id="password"><br>
+  <label>Email:</label><input type="email" id="register-email"><br>
+  <label>Password:</label><input type="password" id="register-password"><br>
   <button onclick="register()">Register</button>
+  
+  <h1>Login</h1>
+  <label>Email:</label><input type="email" id="login-email"><br>
+  <label>Password:</label><input type="password" id="login-password"><br>
+  <button onclick="login()">Login</button>
 </body>
 </html>
