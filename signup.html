@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Register/Login 2</title>
+  <title>Register/Login</title>
   <script>
     async function register() {
       const email = document.getElementById('register-email').value;
@@ -14,6 +14,12 @@
         },
         body: `action=register&email=${email}&password=${password}`
       });
+      
+      if (!response.ok) {
+        alert('Network response was not ok.');
+        return;
+      }
+      
       const result = await response.json();
       alert(result.message);
     }
@@ -29,6 +35,12 @@
         },
         body: `action=login&email=${email}&password=${password}`
       });
+      
+      if (!response.ok) {
+        alert('Network response was not ok.');
+        return;
+      }
+      
       const result = await response.json();
       if (result.status === 'success') {
         alert(`Login successful! Balances: Gold - ${result.gold}, Silver - ${result.silver}, Dollars - ${result.dollars}`);
@@ -39,7 +51,7 @@
   </script>
 </head>
 <body>
-  <h1>Register</h1>
+  <h1>Register 3</h1>
   <label>Email:</label><input type="email" id="register-email"><br>
   <label>Password:</label><input type="password" id="register-password"><br>
   <button onclick="register()">Register</button>
